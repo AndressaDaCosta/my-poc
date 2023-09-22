@@ -1,0 +1,22 @@
+{
+	"layout1": {
+		"title": "Mercado",
+		"description": "Descrição do Layout 1",
+		"image": "/mercado.png"
+	},
+	"layout2": {
+		"title": "Moda",
+		"description": "Descrição do Layout 2",
+		"image": "/moda.ico"
+	},
+	"layout3": {
+		"title": "Cassino",
+		"description": "Descrição do Layout 3",
+		"image": "/cassino.ico"
+	},
+	"layout4": {
+		"title": "Serviços",
+		"description": "Descrição do Layout 4",
+		"image": "/servico.ico"
+	}
+}
