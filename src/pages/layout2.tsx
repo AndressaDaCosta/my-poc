@@ -33,10 +33,10 @@ export default function Layout2() {
         <link rel="icon" href={data.image} />
 
         {/* Meta tags OG para compartilhamento em redes sociais */}
-        <meta property="og:title" content={data.title} />
-        <meta property="og:description" content={data.description} />
-        <meta property="og:image" content={data.image} />
-        <meta property="og:url" content={`www.${data.title}-exemplo.com.br`} />
+       <meta property="og:title" content="Título Moda" />
+        <meta property="og:description" content="Descrição Moda" />
+        <meta property="og:image" content="/moda.ico" />
+        <meta property="og:url" content="www.moda-exemplo.com.br" />
         <meta property="og:type" content="website" />
       </Head>
       <h1>Layout 2</h1>
