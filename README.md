@@ -16,6 +16,14 @@ E também como usar o Next.js para otimizar o carregamento de imagens em uma apl
 -   Cada página de layout possui seu próprio título, descrição e ícone definidos no arquivo `metadata.json`.
 -   O ícone de cada página esta armazenado na pasta `public/`.
 
+## Compartilhamento dos Layouts por Whatsapp
+
+- recebendo os metadados próprios sobreescrevendo os metadados da aplicação geral 
+
+<img src="./public/assets/convem-whats.png" >
+<img src="./public/assets/cassino-whats.png" >
+<img src="./public/assets/servicos-whats.png" >
+
 ### Imagens Não Otimizadas
 
 No HTML padrão, as imagens são carregadas diretamente com a tag `<img>`. No entanto, isso requer otimizações manuais, como dimensionamento, carregamento preguiçoso e otimização de formato.
@@ -38,6 +46,7 @@ Tempo de carregamento: 82ms
 
 <img src="./public/assets/time-images.png" >
 <img src="./public/assets/imagem-next-html.png" >
+
 
 ### Tecnologias Usadas
 
