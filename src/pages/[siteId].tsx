@@ -58,19 +58,14 @@ const SiteInfo = () => {
 	return (
 		<div className={`${styles.container} ${styles.cardContainer}`}>
 			<Head>
-				<title>
-					{siteData?.sections.configurations.title || "carregando"}
-				</title>
+				<title>{siteData?.sections.configurations.title}</title>
 				<link
 					rel="icon"
 					href={faviconFromApi}
 				/>
 				<meta
 					name="description"
-					content={
-						siteData?.sections.configurations.description ||
-						"carregando"
-					}
+					content={siteData?.sections.configurations.description}
 				/>
 			</Head>
 			{loading ? (
