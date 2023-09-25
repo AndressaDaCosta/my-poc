@@ -53,32 +53,30 @@ const SiteInfo = () => {
 		}
 	}, [siteId])
 
-	const faviconFromApi = siteData?.sections.configurations.favicon
-	const descriptionApi = siteData?.sections.configurations.description
-	const titleApi = siteData?.sections.configurations.title
+	
 	return (
 		<div className={`${styles.container} ${styles.cardContainer}`}>
 			<Head>
-				<title>{titleApi}</title>
+				<title>{siteData?.sections.configurations.title}</title>
 				<link
 					rel="icon"
-					href={faviconFromApi}
+					href={siteData?.sections.configurations.favicon}
 				/>
 				<meta
 					name="description"
-					content={descriptionApi}
+					content={siteData?.sections.configurations.description}
 				/>
 				<meta
 					property="og:title"
-					content={titleApi}
+					content={siteData?.sections.configurations.title}
 				/>
 				<meta
 					property="og:description"
-					content={descriptionApi}
+					content={siteData?.sections.configurations.description}
 				/>
 				<meta
 					property="og:image"
-					content={faviconFromApi}
+					content={siteData?.sections.configurations.favicon}
 				/>
 				<meta
 					property="og:url"

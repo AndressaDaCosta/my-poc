@@ -19,7 +19,26 @@ export default function Home() {
 					name="description"
 					content={"Exemplo de descrição"}
 				/>
-				
+				<meta
+					property="og:title"
+					content="Site Cliente"
+				/>
+				<meta
+					property="og:description"
+					content="Exemplo Descrição"
+				/>
+				<meta
+					property="og:image"
+					content="/convem.ico"
+				/>
+				<meta
+					property="og:url"
+					content="www.convem.com.br"
+				/>
+				<meta
+					property="og:type"
+					content="website"
+				/>
 			</Head>
 			<ApiDataSearch />
 		</div>
