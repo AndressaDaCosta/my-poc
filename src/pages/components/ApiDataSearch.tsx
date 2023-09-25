@@ -6,9 +6,23 @@ import axios from "axios"
 import Head from "next/head"
 import styles from "./ApiDataSearch.module.css"
 
+interface SiteData {
+	domain: string;
+	storeType: string;
+	theme: {
+	  id: number;
+	};
+	sections: {
+	  configurations: {
+		title: string;
+		favicon: string;
+		description: string;
+	  };
+	};
+  }
  const ApiDataSearch = () => {
 	const [siteId, setSiteId] = useState("")
-	const [siteData, setSiteData] = useState(null)
+	const [siteData, setSiteData] = useState<SiteData | null>(null);
 	const [loading, setLoading] = useState(false)
 	const [error, setError] = useState("")
 
