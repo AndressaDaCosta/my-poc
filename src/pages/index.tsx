@@ -19,6 +19,7 @@ export default function Home() {
 					name="description"
 					content={"Exemplo de descrição"}
 				/>
+				
 			</Head>
 			<ApiDataSearch />
 		</div>

@@ -54,18 +54,39 @@ const SiteInfo = () => {
 	}, [siteId])
 
 	const faviconFromApi = siteData?.sections.configurations.favicon
-
+	const descriptionApi = siteData?.sections.configurations.description
+	const titleApi = siteData?.sections.configurations.title
 	return (
 		<div className={`${styles.container} ${styles.cardContainer}`}>
 			<Head>
-				<title>{siteData?.sections.configurations.title}</title>
+				<title>{titleApi}</title>
 				<link
 					rel="icon"
 					href={faviconFromApi}
 				/>
 				<meta
 					name="description"
-					content={siteData?.sections.configurations.description}
+					content={descriptionApi}
+				/>
+				<meta
+					property="og:title"
+					content={titleApi}
+				/>
+				<meta
+					property="og:description"
+					content={descriptionApi}
+				/>
+				<meta
+					property="og:image"
+					content={faviconFromApi}
+				/>
+				<meta
+					property="og:url"
+					content={`https://www.${siteData?.domain}`}
+				/>
+				<meta
+					property="og:type"
+					content="website"
 				/>
 			</Head>
 			{loading ? (

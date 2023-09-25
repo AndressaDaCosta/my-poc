@@ -43,6 +43,7 @@ export default function ApiDataSearch() {
 	}
 
 	return (
+		
 		<div className={styles.cardContainer}>
 			<div className={styles.logoContainer}>
 				<img
