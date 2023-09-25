@@ -6,6 +6,8 @@ import Head from "next/head"
 import styles from "./[siteId].module.css"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
+import LoadingComponent from "./components/LoadingComponent"
+import ErrorComponent from "./components/ErrorComponent"
 
 interface SiteData {
 	domain: string
@@ -52,46 +54,48 @@ const SiteInfo = () => {
 			fetchData()
 		}
 	}, [siteId])
+	if (loading) {
+		return <LoadingComponent />
+	}
 
-	
-	return (
-		<div className={`${styles.container} ${styles.cardContainer}`}>
-			<Head>
-				<title>{siteData?.sections.configurations.title}</title>
-				<link
-					rel="icon"
-					href={siteData?.sections.configurations.favicon}
-				/>
-				<meta
-					name="description"
-					content={siteData?.sections.configurations.description}
-				/>
-				<meta
-					property="og:title"
-					content={siteData?.sections.configurations.title}
-				/>
-				<meta
-					property="og:description"
-					content={siteData?.sections.configurations.description}
-				/>
-				<meta
-					property="og:image"
-					content={siteData?.sections.configurations.favicon}
-				/>
-				<meta
-					property="og:url"
-					content={`https://www.${siteData?.domain}`}
-				/>
-				<meta
-					property="og:type"
-					content="website"
-				/>
-			</Head>
-			{loading ? (
-				<h1>Carregando...</h1>
-			) : error ? (
-				<p style={{ color: "red" }}>{error}</p>
-			) : siteData ? (
+	if (error) {
+		return <ErrorComponent message={error} />
+	}
+
+	if (siteData) {
+		return (
+			<div className={`${styles.container} ${styles.cardContainer}`}>
+				<Head>
+					<title>{siteData?.sections.configurations.title}</title>
+					<link
+						rel="icon"
+						href={siteData?.sections.configurations.favicon}
+					/>
+					<meta
+						name="description"
+						content={siteData?.sections.configurations.description}
+					/>
+					<meta
+						property="og:title"
+						content={siteData?.sections.configurations.title}
+					/>
+					<meta
+						property="og:description"
+						content={siteData?.sections.configurations.description}
+					/>
+					<meta
+						property="og:image"
+						content={siteData?.sections.configurations.favicon}
+					/>
+					<meta
+						property="og:url"
+						content={`https://www.${siteData?.domain}`}
+					/>
+					<meta
+						property="og:type"
+						content="website"
+					/>
+				</Head>
 				<div className={styles.cardInfo}>
 					<p>
 						<strong>Domínio:</strong> {siteData.domain}
@@ -119,9 +123,10 @@ const SiteInfo = () => {
 						{siteData.sections.configurations?.description}
 					</p>
 				</div>
-			) : null}
-		</div>
-	)
+				)
+			</div>
+		)
+	}
+	return null
 }
-
 export default SiteInfo

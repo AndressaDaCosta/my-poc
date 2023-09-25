@@ -3,7 +3,6 @@
 import { Inter } from "next/font/google"
 import ApiDataSearch from "./components/ApiDataSearch"
 import Head from "next/head"
-
 const inter = Inter({ subsets: ["latin"] })
 
 export default function Home() {
