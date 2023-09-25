@@ -12,7 +12,7 @@ import styles from "./ApiDataSearch.module.css"
 	const [loading, setLoading] = useState(false)
 	const [error, setError] = useState("")
 
-	const handleInputChange = (event) => {
+	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setSiteId(event.target.value)
 	}
 
