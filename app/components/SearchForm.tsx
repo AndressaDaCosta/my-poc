@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import styles from "../styles/home.module.css";
 import Link from "next/link";
 
-export default function ApiDataSearch() {
+export default function SearchForm() {
   const [siteId, setSiteId] = useState("");
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSiteId(event.target.value);
   };
 
