@@ -1,87 +1,151 @@
-// pages/layout1.tsx
-import React, { useEffect, useState } from "react"
-import Head from "next/head"
-import NextImage from "./components/NextImage"
-// import layoutData from '../../public/metadata.json';
-import ImagemPesadaSvg from "../../assets/imagem-pesada.svg"
+// pages/layout.tsx (Layout)
 
-export default function Layout1() {
-	// const data = layoutData.layout1;
-	const [data, setData] = useState({
-		title: "",
-		description: "",
-		image: ""
-	})
+import React, { useEffect, useState } from "react"
+import { useRouter } from "next/router"
+import LoadingComponent from "./components/LoadingComponent"
+import ErrorComponent from "./components/ErrorComponent"
+import styles from "../styles/layouts.module.css"
+import Head from "next/head"
+import Link from "next/link"
+
+interface SiteData {
+	domain: string
+	storeType: string
+	theme: {
+		id: number
+	}
+	sections: {
+		configurations: {
+			title: string
+			favicon: string
+			description: string
+		}
+	}
+}
+
+const Layout1 = () => {
+	const router = useRouter()
+	const { siteId } = router.query
+
+	const [siteData, setSiteData] = useState<SiteData | null>(null)
+	const [loading, setLoading] = useState(false)
+	const [error, setError] = useState("")
 
 	useEffect(() => {
-		// Simulação de uma solicitação fetch para buscar dados do arquivo JSON
-		fetch("/metadata.json")
-			.then((response) => response.json())
-			.then((jsonData) => {
-				const layoutData = jsonData.layout1
-				setData({
-					title: layoutData.title,
-					description: layoutData.description,
-					image: layoutData.image
-				})
-			})
-			.catch((error) => {
-				console.error("Erro ao buscar dados:", error)
-			})
-	}, [])
+		if (!siteId) {
+			setError("ID não encontrado na URL.")
+			return
+		}
 
-	return (
-		<div>
-			<Head>
-				<title>{data.title}</title>
-				<link
-					rel="icon"
-					href={data.image}
-				/>
+		setLoading(true)
+		setError("")
 
-				{/* Meta tags OG para compartilhamento em redes sociais como facebook e whatsapp*/}
-				<meta
-					property="og:title"
-					content={data.title}
-				/>
-				<meta
-					property="og:description"
-					content={data.description}
-				/>
-				<meta
-					property="og:image"
-					content={data.image}
-				/>
-				<meta
-					property="og:url"
-					content={`www.${data.title}-exemplo.com.br`}
-				/>
-				<meta
-					property="og:type"
-					content="website"
-				/>
-			</Head>
-			<img
-				title="favicon"
-				src={data.image}
-				alt={`Ícone de ${data.title}`}
-			/>
-			<h1> Layout 1</h1>
+		const fetchData = async () => {
+			try {
+				const response = await fetch(
+					`https://api-site-config.convem.me/V1/config-json/${siteId}`
+				)
+				if (response.status === 404) {
+					throw new Error("ID não encontrado na API.")
+				}
+				const data = await response.json()
+				setSiteData(data.data)
+			} catch (err) {
+				setError(
+					err instanceof Error
+						? err.message
+						: "Erro na busca de dados."
+				)
+			} finally {
+				setLoading(false)
+			}
+		}
 
-			<div style={{ display: "flex", alignItems: "center" }}>
-				<div style={{ textAlign: "center" }}>
-					<NextImage />
-				</div>
-				<div style={{ textAlign: "center" }}>
-					<h2>Imagem HTML</h2>
-					<img
-						src="/assets/imagem-pesada.svg"
-						width={300}
-						height={100}
-						alt="imagem img"
-					/>
+		fetchData()
+	}, [siteId])
+
+	if (loading) {
+		return <LoadingComponent />
+	}
+
+	if (error) {
+		return <ErrorComponent message={error} />
+	}
+
+	if (siteData) {
+		return (
+			<div>
+				<div className={`${styles.container} ${styles.cardContainer}`}>
+					<Head>
+						<title>{siteData?.sections.configurations.title}</title>
+						<link
+							rel="icon"
+							href={siteData?.sections.configurations.favicon}
+						/>
+						<meta
+							name="description"
+							content={
+								siteData?.sections.configurations.description
+							}
+						/>
+						<meta
+							property="og:title"
+							content={siteData?.sections.configurations.title}
+						/>
+						<meta
+							property="og:description"
+							content={
+								siteData?.sections.configurations.description
+							}
+						/>
+						<meta
+							property="og:image"
+							content={siteData?.sections.configurations.favicon}
+						/>
+						<meta
+							property="og:url"
+							content={`https://www.${siteData?.domain}`}
+						/>
+						<meta
+							property="og:type"
+							content="website"
+						/>
+					</Head>
+					<div className={styles.cardInfo}>
+						<p>
+							<strong>Domínio:</strong> {siteData?.domain}
+						</p>
+						<p>
+							<strong>Tipo de Site:</strong> {siteData?.storeType}
+						</p>
+						<p>
+							<strong>Id Layout:</strong> {siteData?.theme?.id}
+						</p>
+						<p>
+							<strong>Titulo:</strong>{" "}
+							{siteData?.sections.configurations?.title}
+						</p>
+						<p>
+							<strong>Favicon: </strong>
+							<img
+								src={siteData?.sections.configurations?.favicon}
+								alt="Favicon"
+								width={40}
+							/>
+						</p>
+						<p>
+							<strong> Descrição: </strong>
+							{siteData?.sections.configurations?.description}
+						</p>
+						<Link href="/">Voltar para a Página Inicial</Link>
+					</div>
+					)
 				</div>
 			</div>
-		</div>
-	)
+		)
+	}
+
+	return null
 }
+
+export default Layout1

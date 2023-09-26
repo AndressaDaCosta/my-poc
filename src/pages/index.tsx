@@ -1,45 +1,84 @@
 // pages/index.tsx
 
-import { Inter } from "next/font/google"
-import ApiDataSearch from "./components/ApiDataSearch"
-import Head from "next/head"
-const inter = Inter({ subsets: ["latin"] })
+import styles from "../styles/Home.module.css"
+import React, { useState } from "react"
+import { useRouter } from "next/router"
 
-export default function Home() {
+const Home = () => {
+	const router = useRouter()
+	const [siteId, setSiteId] = useState("")
+
+	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setSiteId(event.target.value)
+	}
+
+	const handleSubmit = async () => {
+		if (!siteId) {
+			return
+		}
+
+		try {
+			const response = await fetch(
+				`https://api-site-config.convem.me/V1/config-json/${siteId}`
+			)
+			if (response.status === 404) {
+				throw new Error("ID não encontrado na API.")
+			}
+			const data = await response.json()
+
+			if (data.data && data.data.theme) {
+				const themeId = data.data.theme.id
+
+				switch (themeId) {
+					case 1:
+						router.push(`/layout1?siteId=${siteId}`)
+						break
+					case 2:
+						router.push(`/layout2?siteId=${siteId}`)
+						break
+					case 3:
+						router.push(`/layout3?siteId=${siteId}`)
+						break
+					case 4:
+						router.push(`/layout4?siteId=${siteId}`)
+						break
+					default:
+						throw new Error("Layout não suportado")
+				}
+			} else {
+				throw new Error("Dados inválidos da API.")
+			}
+		} catch (err) {
+			console.error(err)
+		}
+	}
+
 	return (
 		<div>
-			<Head>
-				<title>Site Clientes</title>
-				<link
-					rel="icon"
-					href={"/convem.ico"}
+			<div className={styles.cardContainer}>
+				<div className={styles.logoContainer}>
+					<img
+						className={styles.logo}
+						src="/convem-logo.svg"
+						alt="Logo"
+					/>
+				</div>
+				<h3>Informe o ID do Site</h3>
+				<input
+					className={styles.input}
+					type="text"
+					placeholder="Exemplo: 1243"
+					value={siteId}
+					onChange={handleInputChange}
 				/>
-				<meta
-					name="description"
-					content={"Exemplo de descrição"}
-				/>
-				<meta
-					property="og:title"
-					content="Site Cliente"
-				/>
-				<meta
-					property="og:description"
-					content="Exemplo Descrição"
-				/>
-				<meta
-					property="og:image"
-					content="/convem.ico"
-				/>
-				<meta
-					property="og:url"
-					content="www.convem.com.br"
-				/>
-				<meta
-					property="og:type"
-					content="website"
-				/>
-			</Head>
-			<ApiDataSearch />
+				<button
+					className={styles.button}
+					onClick={handleSubmit}>
+					Buscar Dados
+				</button>
+			</div>
 		</div>
 	)
 }
+
+export default Home
