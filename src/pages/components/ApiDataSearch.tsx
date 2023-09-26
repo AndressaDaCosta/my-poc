@@ -22,6 +22,8 @@ export default function ApiDataSearch() {
 			setError("Somente Números.")
 			return
 		}
+
+		
 		setLoading(true)
 		setError("")
 
