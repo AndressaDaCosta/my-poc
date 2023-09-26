@@ -26,6 +26,9 @@ export async function generateMetadata({
   const res = await fetch(
     `https://api-site-config.convem.me/V1/config-json/${searchParams.siteId}`,
   );
+  if (!res.ok) {
+    throw new Error("ERRO");
+  }
   const siteMetadata: SiteConfig = await res.json();
 
   return {
@@ -53,15 +56,15 @@ export async function generateMetadata({
 
 export default async function Site({ searchParams }: any) {
   let siteConfig: SiteConfig;
-  try {
-    const response = await fetch(
-      `https://api-site-config.convem.me/V1/config-json/${searchParams.siteId}`,
-    );
-
-    siteConfig = await response.json();
-  } catch (err) {
+  const response = await fetch(
+    `https://api-site-config.convem.me/V1/config-json/${searchParams.siteId}`,
+  );
+  if (!response.ok) {
     throw new Error("ERRO");
   }
+
+  siteConfig = await response.json();
+
   return (
     <div className={`${styles.container} ${styles.cardContainer}`}>
       <div className={styles.cardInfo}>
