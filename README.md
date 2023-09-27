@@ -14,6 +14,8 @@ Prova de conceito (PoC) que aborda a resolução de problemas de indexação e c
 
 -   A página de destino do site (app/site/page.tsx) recebe o ID do site como parâmetro de consulta. Ele faz uma chamada à API para buscar informações do site com base no ID e exibe essas informações na página. Além disso, configura os metadados com base nas informações do site para garantir um compartilhamento apropriado em redes sociais.
 
+<img src="./assets/SEO.png">
+
 <div align="center">
 
 ### Exemplos de compartilhamento por whatsapp:
