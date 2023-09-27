@@ -1,37 +1,45 @@
-"use client";
+"use client"
 
-import { ChangeEvent, useState } from "react";
-import styles from "../styles/home.module.css";
-import Link from "next/link";
+import { ChangeEvent, useState, useEffect } from "react"
+import styles from "../styles/home.module.css"
+import Link from "next/link"
 
 export default function SearchForm() {
-  const [siteId, setSiteId] = useState("");
+	const [siteId, setSiteId] = useState("")
+	const [currentHost, setCurrentHost] = useState("")
 
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSiteId(event.target.value);
-  };
+	useEffect(() => {
+		if (typeof window !== "undefined") {
+			setCurrentHost(window.location.hostname)
+		}
+	}, [])
 
-  return (
-    <div className={styles.cardContainer}>
-      <div className={styles.logoContainer}>
-        <img className={styles.logo} src="/convem-logo.svg" alt="Logo" />
-      </div>
-      <h3>Informe o ID do Site</h3>
-      <input
-        className={styles.input}
-        type="text"
-        placeholder="Exemplo: 1243"
-        value={siteId}
-        onChange={handleInputChange}
-      />
-      <Link
-        href={{
-          pathname: "/site",
-          query: { siteId: siteId },
-        }}
-      >
-        <button className={styles.button}>Buscar</button>
-      </Link>
-    </div>
-  );
+	const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+		setSiteId(event.target.value)
+	}
+
+	const siteUrl = `/site?siteId=${siteId}`
+
+	return (
+		<div className={styles.cardContainer}>
+			<div className={styles.logoContainer}>
+				<img
+					className={styles.logo}
+					src="/convem-logo.svg"
+					alt="Logo"
+				/>
+			</div>
+			<h3>Informe o ID do Site</h3>
+			<input
+				className={styles.input}
+				type="text"
+				placeholder="Exemplo: 1243"
+				value={siteId}
+				onChange={handleInputChange}
+			/>
+			<Link href={siteUrl}>
+				<button className={styles.button}>Buscar</button>
+			</Link>
+		</div>
+	)
 }
