@@ -2,11 +2,6 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import SiteComponent from "./components/SiteComponent";
 
-const headersList = headers();
-const domain = headersList.get("host") || "";
-
-console.log("DOMÍNIO:", domain);
-
 type SiteConfig = {
   data: {
     domain: string;
@@ -57,5 +52,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function Home() {
+  const headersList = headers();
+  const domain = headersList.get("host") || "";
+
+  console.log("DOMÍNIO:", domain);
+
   return <SiteComponent />;
 }
