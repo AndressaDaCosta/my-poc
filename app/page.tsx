@@ -20,6 +20,10 @@ type SiteConfig = {
 };
 
 export async function generateMetadata(): Promise<Metadata> {
+  const headersList = headers();
+  const domain = headersList.get("host") || "";
+
+  console.log("DOMÍNIO:", domain);
   const res = await fetch(
     `https://api-site-config.convem.me/V1/config-json/1243`,
   );
@@ -52,10 +56,5 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function Home() {
-  const headersList = headers();
-  const domain = headersList.get("host") || "";
-
-  console.log("DOMÍNIO:", domain);
-
   return <SiteComponent />;
 }
