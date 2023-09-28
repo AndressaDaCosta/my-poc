@@ -25,7 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
   console.log("DOMÍNIO:", domain);
   const res = await fetch(
-    `https://api-site-config.convem.me/V1/config-json/1243`,
+    `https://api-site-config.convem.me/V1/config-json/539`,
   );
   if (!res.ok) {
     throw new Error("ERRO");

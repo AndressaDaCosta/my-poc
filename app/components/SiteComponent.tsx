@@ -24,7 +24,7 @@ export default function SiteComponent() {
   const [siteConfig, setSiteConfig] = useState<SiteConfig | null>(null);
 
   useEffect(() => {
-    fetch(`https://api-site-config.convem.me/V1/config-json/1243`)
+    fetch(`https://api-site-config.convem.me/V1/config-json/539`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("ERRO");
