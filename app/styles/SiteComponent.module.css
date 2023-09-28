@@ -37,3 +37,6 @@
 .cardInfo p {
 	margin: 0; /* Remove o espaço padrão do parágrafo */
 }
+.error {
+	color: red;
+}
