@@ -3,17 +3,24 @@
 import { ChangeEvent, useState } from "react";
 import styles from "../styles/home.module.css";
 import Link from "next/link";
-import SiteComponente from "../components/SiteComponent"; 
+import SiteComponent from "../components/SiteComponent";
+
+export let exportDomain = "";
+
+function setExportDomain(domain: string) {
+  exportDomain = domain;
+}
 
 export default function SearchForm() {
-  const [domain, setDomain] = useState("");
   const [showSite, setShowSite] = useState(false);
+  const [domain, setDomain] = useState("");
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setDomain(event.target.value);
+    setExportDomain(event.target.value);
   };
   const handleShowSite = () => {
-    setShowSite(true); 
+    setShowSite(true);
   };
 
   return (
@@ -29,12 +36,11 @@ export default function SearchForm() {
         value={domain}
         onChange={handleInputChange}
       />
-     <button className={styles.button} onClick={handleShowSite}>
+      <button className={styles.button} onClick={handleShowSite}>
         Buscar
       </button>
 
-      {showSite && <SiteComponente domain={domain}  />} 
+      {showSite && <SiteComponent />}
     </div>
-    
   );
 }
