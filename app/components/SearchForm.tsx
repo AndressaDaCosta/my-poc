@@ -1,45 +1,40 @@
-"use client"
+"use client";
 
-import { ChangeEvent, useState, useEffect } from "react"
-import styles from "../styles/home.module.css"
-import Link from "next/link"
+import { ChangeEvent, useState } from "react";
+import styles from "../styles/home.module.css";
+import Link from "next/link";
+import SiteComponente from "../components/SiteComponent"; 
 
 export default function SearchForm() {
-	const [siteId, setSiteId] = useState("")
-	const [currentHost, setCurrentHost] = useState("")
+  const [domain, setDomain] = useState("");
+  const [showSite, setShowSite] = useState(false);
 
-	useEffect(() => {
-		if (typeof window !== "undefined") {
-			setCurrentHost(window.location.hostname)
-		}
-	}, [])
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setDomain(event.target.value);
+  };
+  const handleShowSite = () => {
+    setShowSite(true); 
+  };
 
-	const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-		setSiteId(event.target.value)
-	}
+  return (
+    <div className={styles.cardContainer}>
+      <div className={styles.logoContainer}>
+        <img className={styles.logo} src="/convem-logo.svg" alt="Logo" />
+      </div>
+      <h3>Informe o ID do Site</h3>
+      <input
+        className={styles.input}
+        type="text"
+        placeholder="Exemplo: 1243"
+        value={domain}
+        onChange={handleInputChange}
+      />
+     <button className={styles.button} onClick={handleShowSite}>
+        Buscar
+      </button>
 
-	const siteUrl = `/site?siteId=${siteId}`
-
-	return (
-		<div className={styles.cardContainer}>
-			<div className={styles.logoContainer}>
-				<img
-					className={styles.logo}
-					src="/convem-logo.svg"
-					alt="Logo"
-				/>
-			</div>
-			<h3>Informe o ID do Site</h3>
-			<input
-				className={styles.input}
-				type="text"
-				placeholder="Exemplo: 1243"
-				value={siteId}
-				onChange={handleInputChange}
-			/>
-			<Link href={siteUrl}>
-				<button className={styles.button}>Buscar</button>
-			</Link>
-		</div>
-	)
+      {showSite && <SiteComponente domain={domain}  />} 
+    </div>
+    
+  );
 }
