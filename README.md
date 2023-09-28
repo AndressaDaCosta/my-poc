@@ -20,6 +20,27 @@ Prova de conceito (PoC) que aborda a resolução de problemas de indexação e c
 
 ### Exemplos de compartilhamento por whatsapp:
 
+<img src="./assets/cassino.png">
+
+#
+
+<img src="./assets/mercado.png">
+
+#
+
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
+
 <img src="./assets/siteClientes.png">
 
 #
