@@ -1,5 +1,4 @@
 "use client"
-
 import { useEffect, useState } from "react"
 import styles from "../styles/SiteComponent.module.css"
 
@@ -19,7 +18,6 @@ type SiteConfig = {
 		}
 	}
 }
-
 type InstallPromptResult = {
 	outcome: "accepted" | "dismissed"
 	platform: string
@@ -27,7 +25,7 @@ type InstallPromptResult = {
 
 export default function SiteComponent() {
 	const [siteConfig, setSiteConfig] = useState<SiteConfig | null>(null)
-	const [installPrompt, setInstallPrompt] = useState<any>(null)
+	const [setupButtonVisible, setSetupButtonVisible] = useState(false)
 
 	useEffect(() => {
 		fetch(`https://api-site-config.convem.me/V1/config-json/539`)
@@ -44,23 +42,44 @@ export default function SiteComponent() {
 				console.error(error)
 				setSiteConfig(null)
 			})
+	}, [])
+	//    @ts-ignore
+	let deferredPrompt: BeforeInstallPromptEvent | null = null
+	// @ts-ignore
+	const handleBeforeInstallPrompt = (e: BeforeInstallPromptEvent) => {
+		e.preventDefault()
+		deferredPrompt = e
+		setSetupButtonVisible(true)
+	}
 
-		window.addEventListener("beforeinstallprompt", (e) => {
-      console.log("Evento beforeinstallprompt disparado!");
-			e.preventDefault()
-			setInstallPrompt(e)
-		})
+	useEffect(() => {
+		window.addEventListener(
+			"beforeinstallprompt",
+			handleBeforeInstallPrompt
+		)
+
+		return () => {
+			window.removeEventListener(
+				"beforeinstallprompt",
+				handleBeforeInstallPrompt
+			)
+		}
 	}, [])
 
-	const handleInstallClick = () => {
-		if (installPrompt) {
-			installPrompt.prompt()
-			installPrompt.userChoice.then(
+	const installApp = () => {
+		if (deferredPrompt) {
+			deferredPrompt.prompt()
+			setSetupButtonVisible(false)
+
+			deferredPrompt.userChoice.then(
 				(choiceResult: InstallPromptResult) => {
 					if (choiceResult.outcome === "accepted") {
-						console.log("Usuário aceitou a instalação")
+						console.log("PWA configurado com sucesso")
+					} else {
+						console.log("Configuração do PWA rejeitada")
 					}
-					setInstallPrompt(null)
+
+					deferredPrompt = null
 				}
 			)
 		}
@@ -69,7 +88,6 @@ export default function SiteComponent() {
 	if (!siteConfig) {
 		return <div>Carregando...</div>
 	}
-
 	return (
 		<div className={`${styles.container} ${styles.cardContainer}`}>
 			<div className={styles.cardInfo}>
@@ -98,7 +116,7 @@ export default function SiteComponent() {
 					<strong> Descrição: </strong>
 					{siteConfig.data.sections.configurations?.description}
 				</p>
-				<button onClick={handleInstallClick}>Baixar o App</button>
+				<button onClick={installApp}>Baixar o App</button>
 			</div>
 		</div>
 	)
