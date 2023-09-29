@@ -20,52 +20,50 @@ type SiteConfig = {
 	}
 }
 
+type InstallPromptResult = {
+	outcome: "accepted" | "dismissed"
+	platform: string
+}
+
 export default function SiteComponent() {
-  const [siteConfig, setSiteConfig] = useState<SiteConfig | null>(null);
+	const [siteConfig, setSiteConfig] = useState<SiteConfig | null>(null)
+	const [installPrompt, setInstallPrompt] = useState<any>(null)
 
-  useEffect(() => {
-    fetch(`https://api-site-config.convem.me/V1/config-json/539`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Erro na solicitação à API");
-        }
-        return response.json();
-      })
-      .then((data: SiteConfig) => {
-        setSiteConfig(data);
-      })
-      .catch((error) => {
-        console.error(error);
-        // Exiba uma mensagem de erro caso algo dê errado
-        setSiteConfig(null);
-      });
-  }, []);
+	useEffect(() => {
+		fetch(`https://api-site-config.convem.me/V1/config-json/539`)
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error("Erro na solicitação à API")
+				}
+				return response.json()
+			})
+			.then((data: SiteConfig) => {
+				setSiteConfig(data)
+			})
+			.catch((error) => {
+				console.error(error)
+				setSiteConfig(null)
+			})
 
-  const installApp = async () => {
-    const manifestLink = document.querySelector('link[rel="manifest"]');
-    if (manifestLink && "beforeinstallprompt" in window) {
-      const installPromptEvent = new Event("beforeinstallprompt", {
-        bubbles: true,
-        cancelable: true,
-      });
+		window.addEventListener("beforeinstallprompt", (e) => {
+			e.preventDefault()
+			setInstallPrompt(e)
+		})
+	}, [])
 
-      manifestLink.dispatchEvent(installPromptEvent);
-
-      try {
-        await installPromptEvent.preventDefault();
-        const href = manifestLink.getAttribute("href");
-        if (href) {
-          window.location.href = href;
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    } else {
-      // Exiba uma mensagem personalizada informando que a instalação não é suportada
-      alert("A instalação não é suportada neste navegador.");
-    }
-  };
-
+	const handleInstallClick = () => {
+		if (installPrompt) {
+			installPrompt.prompt()
+			installPrompt.userChoice.then(
+				(choiceResult: InstallPromptResult) => {
+					if (choiceResult.outcome === "accepted") {
+						console.log("Usuário aceitou a instalação")
+					}
+					setInstallPrompt(null)
+				}
+			)
+		}
+	}
 
 	if (!siteConfig) {
 		return <div>Carregando...</div>
@@ -99,7 +97,7 @@ export default function SiteComponent() {
 					<strong> Descrição: </strong>
 					{siteConfig.data.sections.configurations?.description}
 				</p>
-				<button onClick={installApp}>Instalar o App</button>
+				<button onClick={handleInstallClick}>Baixar o App</button>
 			</div>
 		</div>
 	)
