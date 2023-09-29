@@ -46,6 +46,7 @@ export default function SiteComponent() {
 			})
 
 		window.addEventListener("beforeinstallprompt", (e) => {
+      console.log("Evento beforeinstallprompt disparado!");
 			e.preventDefault()
 			setInstallPrompt(e)
 		})
