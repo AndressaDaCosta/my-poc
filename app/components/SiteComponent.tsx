@@ -46,10 +46,12 @@ export default function SiteComponent() {
     setSetupButtonVisible(true);
   }, []);
 
-  window.addEventListener("beforeinstallprompt", (e) => {
-    e.preventDefault();
-    setDeferredPrompt(e);
-  });
+  useEffect(() => {
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    });
+  }, []);
 
   const installApp = async () => {
     if (deferredPrompt) {
