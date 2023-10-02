@@ -26,6 +26,8 @@ type InstallPromptResult = {
 export default function SiteComponent() {
 	const [siteConfig, setSiteConfig] = useState<SiteConfig | null>(null)
 	const [setupButtonVisible, setSetupButtonVisible] = useState(false)
+	const [notificationPermission, setNotificationPermission] =
+		useState<NotificationPermission | null>(null)
 
 	useEffect(() => {
 		fetch(`https://api-site-config.convem.me/V1/config-json/539`)
@@ -42,14 +44,21 @@ export default function SiteComponent() {
 				console.error(error)
 				setSiteConfig(null)
 			})
+
+		// Verifique o status da permissão de notificação
+		Notification.requestPermission().then((permission) => {
+			setNotificationPermission(permission)
+		setSetupButtonVisible(true)
+
+		})
 	}, [])
+
 	//    @ts-ignore
 	let deferredPrompt: BeforeInstallPromptEvent | null = null
 	// @ts-ignore
 	const handleBeforeInstallPrompt = (e: BeforeInstallPromptEvent) => {
 		e.preventDefault()
 		deferredPrompt = e
-		setSetupButtonVisible(true)
 	}
 
 	useEffect(() => {
@@ -84,6 +93,18 @@ export default function SiteComponent() {
 			)
 		}
 	}
+	const requestNotificationPermission = () => {
+		Notification.requestPermission().then((permission) => {
+			setNotificationPermission(permission)
+			if (permission === "denied") {
+				// Notificações bloqueadas, exiba uma mensagem
+				alert("Você precisa permitir notificações para continuar.")
+			} else if (permission === "granted") {
+				// Notificações permitidas, agora você pode chamar a função installApp
+				installApp()
+			}
+		})
+	}
 
 	if (!siteConfig) {
 		return <div>Carregando...</div>
@@ -116,7 +137,9 @@ export default function SiteComponent() {
 					<strong> Descrição: </strong>
 					{siteConfig.data.sections.configurations?.description}
 				</p>
-				<button onClick={installApp}>Baixar o App</button>
+				{setupButtonVisible && (
+					<button onClick={installApp}>Baixar o App</button>
+				)}
 			</div>
 		</div>
 	)
