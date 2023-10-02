@@ -27,7 +27,6 @@ export default function SiteComponent() {
 	const [siteConfig, setSiteConfig] = useState<SiteConfig | null>(null)
 	const [setupButtonVisible, setSetupButtonVisible] = useState(false)
 
-
 	useEffect(() => {
 		fetch(`https://api-site-config.convem.me/V1/config-json/539`)
 			.then((response) => {
@@ -43,7 +42,7 @@ export default function SiteComponent() {
 				console.error(error)
 				setSiteConfig(null)
 			})
-		
+		setSetupButtonVisible(true)
 	}, [])
 
 	//    @ts-ignore
