@@ -55,6 +55,17 @@ export default function SiteComponent() {
 
   const installApp = async () => {
     if (deferredPrompt) {
+		if (
+			navigator.userAgent.includes("Mac OS") ||
+			navigator.userAgent.includes("iPhone") ||
+			navigator.userAgent.includes("iPad")
+		  ) {
+			// Caso no iOS e macOS, não for possível instalar como um PWA
+			//  instruir os usuários a adicionar à tela inicial manualmente
+			alert(
+			  "No iOS e macOS, não é possível instalar como um PWA. Por favor, adicione à tela inicial manualmente."
+			);
+		  } else {
       deferredPrompt.prompt();
       const { outcome } = deferredPrompt.userChoice.then(
         (choiceResult: InstallPromptResult) => {
@@ -67,40 +78,8 @@ export default function SiteComponent() {
         },
       );
     }
-  };
+  }}
 
-  // const handleBeforeInstallPrompt = (e: any) => {
-  //   e.preventDefault();
-  //   deferredPrompt = e;
-  // };
-  //
-  // useEffect(() => {
-  //   window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
-  //
-  //   // return () => {
-  //   // 	window.removeEventListener(
-  //   // 		"beforeinstallprompt",
-  //   // 		handleBeforeInstallPrompt
-  //   // 	)
-  //   // }
-  // }, []);
-  //
-  // const installApp = () => {
-  //   if (deferredPrompt) {
-  //     deferredPrompt.prompt();
-  //     setSetupButtonVisible(false);
-  //
-  //     deferredPrompt.userChoice.then((choiceResult: InstallPromptResult) => {
-  //       if (choiceResult.outcome === "accepted") {
-  //         console.log("PWA configurado com sucesso");
-  //       } else {
-  //         console.log("Configuração do PWA rejeitada");
-  //       }
-  //
-  //       deferredPrompt = null;
-  //     });
-  //   }
-  // };
 
   if (!siteConfig) {
     return <div>Carregando...</div>;
