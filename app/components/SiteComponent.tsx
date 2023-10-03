@@ -93,7 +93,7 @@ export default function SiteComponent() {
 
 	const addToHomeScreen = () => {
 		alert(
-			"Para adicionar este aplicativo à tela inicial é necessário acessar o site pelo navegador Safari, depois toque no ícone de compartilhamento e selecione 'Adicionar à Tela de Início ⊕'."
+			"Para adicionar este aplicativo à tela inicial é necessário acessar o site pelo navegador Safari, depois toque no ícone de compartilhamento 📲 ⏏️🔝 e selecione 'Adicionar à Tela de Início ⊕'."
 		)
 	}
 
