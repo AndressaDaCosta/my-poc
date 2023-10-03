@@ -1,8 +1,4 @@
-
-const {
-  PHASE_DEVELOPMENT_SERVER,
-  PHASE_PRODUCTION_BUILD,
-} = require("next/constants");
+const { PHASE_DEVELOPMENT_SERVER, PHASE_PRODUCTION_BUILD } = require("next/constants");
 
 /** @type {import("next").NextConfig} */
 const nextConfig = {
@@ -14,7 +10,23 @@ module.exports = (phase) => {
     const withPWA = require("@ducanh2912/next-pwa").default({
       dest: "public",
     });
-    return withPWA(nextConfig);
+
+    // Configuração das regras de reescrita
+    const rewrites = async () => {
+      return [
+        {
+          source: "/manifest.json",
+          destination: "/api/manifest",
+        },
+      ];
+    };
+
+    return withPWA({
+      ...nextConfig,
+      async rewrites() {
+        return rewrites();
+      },
+    });
   }
   return nextConfig;
 };

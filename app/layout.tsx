@@ -1,22 +1,4 @@
 import Head from "next/head"
-// import type { Metadata } from "next"
-
-// export const metadata: Metadata = {
-//   manifest: "/manifest.json",
-//   themeColor: "#FFFFFF",
-//   appleWebApp: {
-//     capable: true,
-//     statusBarStyle: "default",
-//     // startUpImage: [],
-//   },
-//   formatDetection: {
-//     telephone: false,
-//   }
-// };
-// export const metadata = {
-// 	title: "Site Clientes",
-// 	description: "Descrição Site Clientes"
-// }
 
 export default function RootLayout({
 	children
@@ -29,7 +11,7 @@ export default function RootLayout({
 				<Head>
 					<link
 						rel="manifest"
-						href="/manifest.json"
+						href="./api/manifest"
 					/>
 					<meta
 						name="theme-color"

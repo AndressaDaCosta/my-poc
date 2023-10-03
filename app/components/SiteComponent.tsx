@@ -14,7 +14,10 @@ type SiteConfig = {
 				title: string
 				favicon: string
 				description: string
-			}
+			},
+			stores: {
+				name: string;
+			  }[];
 		}
 	}
 }
@@ -38,6 +41,7 @@ export default function SiteComponent() {
 			})
 			.then((data: SiteConfig) => {
 				setSiteConfig(data)
+				console.log(data)
 			})
 			.catch((error) => {
 				console.error(error)
@@ -61,6 +65,12 @@ export default function SiteComponent() {
 		"standalone" in window.navigator && window.navigator.standalone
 
 	const installApp = async () => {
+		const manifest = await fetchManifest();
+
+		if (!manifest) {
+		  alert("Erro ao obter o manifesto. Tente novamente mais tarde.");
+		  return;
+		}
 		if (deferredPrompt) {
 			if (isIos() && !isInStandaloneMode()) {
 				// Verifica se o aplicativo já está instalado
@@ -91,9 +101,25 @@ export default function SiteComponent() {
 		}
 	}
 
+	const fetchManifest = async () => {
+		try {
+		  const response = await fetch("/app/api/manifest.ts");
+	
+		  if (!response.ok) {
+			throw new Error("Erro ao obter o manifesto");
+		  }
+	
+		  const manifest = await response.json();
+		  return manifest;
+		} catch (error) {
+		  console.error(error);
+		  return null;
+		}
+	  };
+
 	const addToHomeScreen = () => {
 		alert(
-			"Para adicionar este aplicativo à tela inicial é necessário acessar o site pelo navegador Safari, depois toque no ícone de compartilhamento 📲 ⏏️🔝 e selecione 'Adicionar à Tela de Início ⊕'."
+			"Para adicionar este aplicativo à tela inicial é necessário acessar o site pelo navegador Safari, depois toque no ícone de compartilhamento  ⏏️ e selecione 'Adicionar à Tela de Início ⊕'."
 		)
 	}
 
@@ -103,6 +129,9 @@ export default function SiteComponent() {
 	return (
 		<div className={`${styles.container} ${styles.cardContainer}`}>
 			<div className={styles.cardInfo}>
+			<p>
+					<strong>Site:</strong> {siteConfig.data.sections.stores[0].name}
+				</p>
 				<p>
 					<strong>Domínio:</strong> {siteConfig.data.domain}
 				</p>
@@ -128,6 +157,10 @@ export default function SiteComponent() {
 					<strong> Descrição: </strong>
 					{siteConfig.data.sections.configurations?.description}
 				</p>
+				<br></br>
+				<br></br>
+				<br></br>
+
 				{setupButtonVisible &&
 					!navigator.userAgent.includes("iPhone") && (
 						<button onClick={installApp}>Baixar o App</button>
@@ -135,10 +168,14 @@ export default function SiteComponent() {
 				{/* Botão de instrução para iOS */}
 				{navigator.userAgent.includes("iPhone") && (
 					<button onClick={addToHomeScreen}>
-						Adicionar à Tela Inicial (iOS)
+						Como Baixar o App (iOS)
 					</button>
 				)}
 			</div>
+			{/* <p>
+				<strong>JSON:</strong>{" "}
+				<pre>{JSON.stringify(siteConfig.data, null, 2)}</pre>
+			</p> */}
 		</div>
 	)
 }

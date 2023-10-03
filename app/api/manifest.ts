@@ -11,6 +11,7 @@ type ManifestContent = {
 		src: string
 		sizes: string
 		type: string
+		purpose: string
 	}[]
 }
 
@@ -24,23 +25,27 @@ export default async function handler(
 		)
 
 		if (!response.ok) {
-			throw new Error("Erro na solicitação à API")
+			res.status(500).json({
+				error: "Erro ao obter as informações da API"
+			})
+			return;
 		}
 
 		const data = await response.json()
 
 		const manifestContent: ManifestContent = {
 			name: data.data.sections.configurations?.title,
-			short_name: "App",
+			short_name: data.data.sections.stores[0].name,
 			start_url: "/",
 			display: "standalone",
-			background_color: "#ffffff",
-			theme_color: "#000000",
+			background_color: data.data.sections.banners[0].button_bg_color,
+			theme_color: data.data.sections.banners[0].button_text_color,
 			icons: [
 				{
 					src: data.data.sections.configurations?.favicon,
 					sizes: "192x192",
-					type: "image/png"
+					type: "image/png",
+					purpose: "any maskable"
 				}
 			]
 		}
