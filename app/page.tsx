@@ -52,6 +52,15 @@ export async function generateMetadata(): Promise<Metadata> {
       locale: "pt_BR",
       type: "website",
     },
+    manifest: "/manifest.json",
+    themeColor: "#FFFFFF",
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: "default",
+    },
+    formatDetection: {
+      telephone: false,
+    },
   };
 }
 
