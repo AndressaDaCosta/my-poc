@@ -60,12 +60,23 @@ export default function RootLayout({
 						rel="manifest"
 						href="/manifest.json"
 					/>
-					<link
-						rel="apple-touch-icon"
-						href="/icon.png"></link>
 					<meta
 						name="theme-color"
 						content="#fff"
+					/>
+          <link
+						rel="apple-touch-icon"
+						href="/icon-192x192.png"
+					/>
+
+					<meta
+						name="apple-mobile-web-app-capable"
+						content="yes"
+					/>
+					<link
+						href="/icon-192x192.png"
+						sizes="2048x2732"
+						rel="apple-touch-startup-image"
 					/>
 				</Head>
 				<body>{children}</body>
