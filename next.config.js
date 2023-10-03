@@ -6,7 +6,12 @@ const nextConfig = {
 };
 
 module.exports = (phase) => {
-  if (phase === PHASE_DEVELOPMENT_SERVER || phase === PHASE_PRODUCTION_BUILD) {
+  if (phase === PHASE_DEVELOPMENT_SERVER) {
+    // No modo de desenvolvimento, não registre o Service Worker
+    return nextConfig;
+  }
+
+  if (phase === PHASE_PRODUCTION_BUILD) {
     const withPWA = require("@ducanh2912/next-pwa").default({
       dest: "public",
     });
@@ -16,7 +21,7 @@ module.exports = (phase) => {
       return [
         {
           source: "/manifest.json",
-          destination: "/api/manifest",
+          destination: "/app/api/manifest.ts",
         },
       ];
     };

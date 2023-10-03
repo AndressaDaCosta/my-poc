@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import styles from "../styles/SiteComponent.module.css"
 
 type SiteConfig = {
-	data: {
+	data: { 
 		domain: string
 		theme: {
 			id: number
@@ -30,6 +30,7 @@ export default function SiteComponent() {
 	const [siteConfig, setSiteConfig] = useState<SiteConfig | null>(null)
 	const [setupButtonVisible, setSetupButtonVisible] = useState(false)
 	const [deferredPrompt, setDeferredPrompt] = useState<any>(null)
+	const [manifest, setManifest] = useState(null);
 
 	useEffect(() => {
 		fetch(`https://api-site-config.convem.me/V1/config-json/539`)
@@ -48,6 +49,20 @@ export default function SiteComponent() {
 				setSiteConfig(null)
 			})
 		setSetupButtonVisible(true)
+		async function fetchManifestData() {
+			try {
+			  const response = await fetch("/api/manifest");
+			  if (!response.ok) {
+				throw new Error("Erro ao obter o manifesto");
+			  }
+			  const manifestData = await response.json();
+			  setManifest(manifestData);
+			} catch (error) {
+			  console.error(error);
+			}
+		  }
+	  
+		  fetchManifestData();
 	}, [])
 
 	useEffect(() => {
@@ -65,12 +80,7 @@ export default function SiteComponent() {
 		"standalone" in window.navigator && window.navigator.standalone
 
 	const installApp = async () => {
-		const manifest = await fetchManifest();
-
-		if (!manifest) {
-		  alert("Erro ao obter o manifesto. Tente novamente mais tarde.");
-		  return;
-		}
+		
 		if (deferredPrompt) {
 			if (isIos() && !isInStandaloneMode()) {
 				// Verifica se o aplicativo já está instalado
@@ -103,7 +113,7 @@ export default function SiteComponent() {
 
 	const fetchManifest = async () => {
 		try {
-		  const response = await fetch("/app/api/manifest.ts");
+		  const response = await fetch("../api/manifest.ts");
 	
 		  if (!response.ok) {
 			throw new Error("Erro ao obter o manifesto");
@@ -123,9 +133,9 @@ export default function SiteComponent() {
 		)
 	}
 
-	if (!siteConfig) {
-		return <div>Carregando...</div>
-	}
+	if (!siteConfig || !manifest) {
+		return <div>Carregando...</div>;
+	  }
 	return (
 		<div className={`${styles.container} ${styles.cardContainer}`}>
 			<div className={styles.cardInfo}>

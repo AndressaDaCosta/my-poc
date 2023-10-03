@@ -11,7 +11,7 @@ export default function RootLayout({
 				<Head>
 					<link
 						rel="manifest"
-						href="./api/manifest"
+						href="./api/manifest.ts"
 					/>
 					<meta
 						name="theme-color"
