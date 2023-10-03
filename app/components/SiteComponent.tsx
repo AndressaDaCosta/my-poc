@@ -52,39 +52,42 @@ export default function SiteComponent() {
 			setDeferredPrompt(e)
 		})
 	}, [])
-
 	const isIos = () => {
-		const userAgent = window.navigator.userAgent.toLowerCase()
-		return /iphone|ipad|ipod/.test(userAgent)
-	}
-
+	  const userAgent = window.navigator.userAgent.toLowerCase();
+	  return /iphone|ipad|ipod/.test(userAgent);
+	};
+  
 	const isInStandaloneMode = () =>
-		"standalone" in window.navigator && window.navigator.standalone
-
+	  "standalone" in window.navigator && window.navigator.standalone;
+  
 	const installApp = async () => {
-		if (deferredPrompt) {
-			if (isIos() && !isInStandaloneMode()) {
-				// No iOS e macOS, não é possível instalar como um PWA
-				// Você pode instruir os usuários a adicionar à tela inicial manualmente
-				alert(
-					"No iOS e macOS, não é possível instalar como um PWA. Por favor, adicione à tela inicial manualmente."
-				)
-			} else {
-				deferredPrompt.prompt()
-				const { outcome } = deferredPrompt.userChoice.then(
-					(choiceResult: InstallPromptResult) => {
-						if (choiceResult.outcome === "accepted") {
-							console.log("PWA configurado com sucesso")
-						} else {
-							console.log("Configuração do PWA rejeitada")
-						}
-						setDeferredPrompt(null)
-					}
-				)
+	  if (deferredPrompt) {
+		if (isIos() && !isInStandaloneMode()) {
+		  // Verifica se o aplicativo já está instalado
+		  if ("standalone" in window.navigator && window.navigator["standalone"]) {
+			alert("O aplicativo já está instalado.");
+		  } else {
+			// Mostra instruções para adicionar à tela inicial manualmente
+			alert(
+			  "Toque no botão de compartilhamento e selecione 'Adicionar à Tela Inicial' para instalar o aplicativo."
+			);
+		  }
+		} else {
+		  deferredPrompt.prompt();
+		  const { outcome } = deferredPrompt.userChoice.then(
+			(choiceResult: InstallPromptResult) => {
+			  if (choiceResult.outcome === "accepted") {
+				console.log("PWA configurado com sucesso");
+			  } else {
+				console.log("Configuração do PWA rejeitada");
+			  }
+			  setDeferredPrompt(null);
 			}
+		  );
 		}
-	}
-
+	  }
+	};
+  
 	if (!siteConfig) {
 		return <div>Carregando...</div>
 	}
