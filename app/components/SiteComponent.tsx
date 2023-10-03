@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import styles from "../styles/SiteComponent.module.css"
 
 type SiteConfig = {
-	data: { 
+	data: {
 		domain: string
 		theme: {
 			id: number
@@ -14,10 +14,14 @@ type SiteConfig = {
 				title: string
 				favicon: string
 				description: string
-			},
+			}
 			stores: {
-				name: string;
-			  }[];
+				name: string
+			}[]
+			banners: {
+				button_bg_color: string
+				button_text_color: string
+			}[]
 		}
 	}
 }
@@ -26,11 +30,35 @@ type InstallPromptResult = {
 	platform: string
 }
 
+function generateDynamicManifest(siteConfig: SiteConfig) {
+	return {
+		name: siteConfig.data.sections.configurations?.title || "Nome Padrão",
+		short_name:
+			siteConfig.data.sections.stores[0].name || "Nome Curto Padrão",
+		start_url: "/",
+		display: "standalone",
+		background_color:
+			siteConfig.data.sections.banners[0]?.button_bg_color || "#ffffff",
+		theme_color:
+			siteConfig.data.sections.banners[0]?.button_text_color || "#000000",
+		icons: [
+			{
+				src:
+					siteConfig.data.sections.configurations?.favicon ||
+					"/icon-192x192.png",
+				sizes: "192x192",
+				type: "image/png",
+				purpose: "any maskable"
+			}
+		]
+	}
+}
+
 export default function SiteComponent() {
 	const [siteConfig, setSiteConfig] = useState<SiteConfig | null>(null)
 	const [setupButtonVisible, setSetupButtonVisible] = useState(false)
 	const [deferredPrompt, setDeferredPrompt] = useState<any>(null)
-	const [manifest, setManifest] = useState(null);
+	const [manifest, setManifest] = useState<string | null>(null)
 
 	useEffect(() => {
 		fetch(`https://api-site-config.convem.me/V1/config-json/539`)
@@ -43,26 +71,38 @@ export default function SiteComponent() {
 			.then((data: SiteConfig) => {
 				setSiteConfig(data)
 				console.log(data)
+
+				const dynamicManifest = generateDynamicManifest(data)
+
+				if (dynamicManifest) {
+					const manifestString = JSON.stringify(dynamicManifest)
+
+					const manifestBlob = new Blob([manifestString], {
+						type: "application/json"
+					})
+					const manifestURL = URL.createObjectURL(manifestBlob)
+
+					const existingManifest = document.querySelector(
+						'link[rel="manifest"]'
+					)
+					if (existingManifest) {
+						existingManifest.remove()
+					}
+
+					const manifestTag = document.createElement("link")
+					manifestTag.rel = "manifest"
+					manifestTag.href = manifestURL
+					document.head.appendChild(manifestTag)
+
+					setManifest(manifestString)
+				}
 			})
 			.catch((error) => {
 				console.error(error)
 				setSiteConfig(null)
 			})
+
 		setSetupButtonVisible(true)
-		async function fetchManifestData() {
-			try {
-			  const response = await fetch("/api/manifest");
-			  if (!response.ok) {
-				throw new Error("Erro ao obter o manifesto");
-			  }
-			  const manifestData = await response.json();
-			  setManifest(manifestData);
-			} catch (error) {
-			  console.error(error);
-			}
-		  }
-	  
-		  fetchManifestData();
 	}, [])
 
 	useEffect(() => {
@@ -71,6 +111,7 @@ export default function SiteComponent() {
 			setDeferredPrompt(e)
 		})
 	}, [])
+
 	const isIos = () => {
 		const userAgent = window.navigator.userAgent.toLowerCase()
 		return /iphone|ipad|ipod/.test(userAgent)
@@ -80,17 +121,14 @@ export default function SiteComponent() {
 		"standalone" in window.navigator && window.navigator.standalone
 
 	const installApp = async () => {
-		
 		if (deferredPrompt) {
 			if (isIos() && !isInStandaloneMode()) {
-				// Verifica se o aplicativo já está instalado
 				if (
 					"standalone" in window.navigator &&
 					window.navigator["standalone"]
 				) {
 					alert("O aplicativo já está instalado.")
 				} else {
-					// Mostra instruções para adicionar à tela inicial manualmente
 					alert(
 						"Toque no botão de compartilhamento e selecione 'Adicionar à Tela Inicial' para instalar o aplicativo."
 					)
@@ -111,36 +149,22 @@ export default function SiteComponent() {
 		}
 	}
 
-	const fetchManifest = async () => {
-		try {
-		  const response = await fetch("../api/manifest.ts");
-	
-		  if (!response.ok) {
-			throw new Error("Erro ao obter o manifesto");
-		  }
-	
-		  const manifest = await response.json();
-		  return manifest;
-		} catch (error) {
-		  console.error(error);
-		  return null;
-		}
-	  };
-
 	const addToHomeScreen = () => {
 		alert(
-			"Para adicionar este aplicativo à tela inicial é necessário acessar o site pelo navegador Safari, depois toque no ícone de compartilhamento  ⏏️ e selecione 'Adicionar à Tela de Início ⊕'."
+			"Para adicionar este aplicativo à tela inicial é necessário acessar o site pelo navegador Safari, depois toque no ícone de compartilhamento ⏏️ e selecione 'Adicionar à Tela de Início ⊕'."
 		)
 	}
 
 	if (!siteConfig || !manifest) {
-		return <div>Carregando...</div>;
-	  }
+		return <div>Carregando...</div>
+	}
+
 	return (
 		<div className={`${styles.container} ${styles.cardContainer}`}>
 			<div className={styles.cardInfo}>
-			<p>
-					<strong>Site:</strong> {siteConfig.data.sections.stores[0].name}
+				<p>
+					<strong>Site:</strong>{" "}
+					{siteConfig.data.sections.stores[0].name}
 				</p>
 				<p>
 					<strong>Domínio:</strong> {siteConfig.data.domain}

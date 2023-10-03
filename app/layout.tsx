@@ -1,18 +1,29 @@
 import Head from "next/head"
 
 export default function RootLayout({
-	children
+	children,
+	manifest
 }: {
 	children: React.ReactNode
+	manifest: string | null
 }) {
 	return (
 		<>
 			<html lang="en">
 				<Head>
-					<link
-						rel="manifest"
-						href="./api/manifest.ts"
-					/>
+					{manifest ? (
+						<link
+							rel="manifest"
+							href={`data:application/json,${encodeURIComponent(
+								manifest
+							)}`}
+						/>
+					) : (
+						<link
+							rel="manifest"
+							href="/manifest.json"
+						/>
+					)}
 					<meta
 						name="theme-color"
 						content="#fff"
