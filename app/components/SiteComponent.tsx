@@ -74,7 +74,7 @@ export default function SiteComponent() {
 		  }
 		} else {
 		  deferredPrompt.prompt();
-		  const { outcome } = deferredPrompt.userChoice.then(
+		  const { outcome } = await deferredPrompt.userChoice.then(
 			(choiceResult: InstallPromptResult) => {
 			  if (choiceResult.outcome === "accepted") {
 				console.log("PWA configurado com sucesso");
@@ -87,6 +87,12 @@ export default function SiteComponent() {
 		}
 	  }
 	};
+
+	const addToHomeScreen = () => {
+		alert(
+		  "Para adicionar este aplicativo à tela inicial, toque no ícone de compartilhamento e selecione 'Adicionar à Tela Inicial'."
+		);
+	  };
   
 	if (!siteConfig) {
 		return <div>Carregando...</div>
@@ -122,6 +128,12 @@ export default function SiteComponent() {
 				{setupButtonVisible && (
 					<button onClick={installApp}>Baixar o App</button>
 				)}
+				 {/* Botão de instrução para iOS */}
+				 {navigator.userAgent.includes("iPhone") && (
+          <button onClick={addToHomeScreen}>
+            Adicionar à Tela Inicial (iOS)
+          </button>
+        )}
 			</div>
 		</div>
 	)
