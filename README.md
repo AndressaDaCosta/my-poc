@@ -50,6 +50,15 @@ Prova de conceito (PoC) que aborda a resolução de problemas de indexação e c
 
 ## Baixar App automático (atalho na tela inicial do dispositivo)
 
+
+ <div>
+      <img  src="./assets/desktop-app-video.gif" >
+  </div>
+  <div>
+      <img src="./assets/mobile-video-app.gif" >
+  </div>
+</div>
+
 <span>Desktop botões de instalação do App</span>
 
 <img width="400" height="300"  src="./assets/desktop-baixar-app.png">
@@ -96,14 +105,7 @@ Prova de conceito (PoC) que aborda a resolução de problemas de indexação e c
 #
 
 
-  <div style="margin-right: 10px;">
-  <img src="./assets/mobile-video-app.gif" >
-  </div>
-    
-  <div>
-      <img  src="./assets/desktop-app-video.gif" >
-  </div>
-</div>
+
 
 <br>
 <br>
