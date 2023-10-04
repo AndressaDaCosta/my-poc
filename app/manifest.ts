@@ -22,10 +22,10 @@ export default async function manifest(): Promise<MetadataRoute.Manifest> {
       theme_color: data.data.sections.banners[0]?.button_text_color || '#000000',
       icons: [
         {
-          src: data.data.sections.configurations?.favicon || '/icon-192x192.png',
-          sizes: '192x192',
+          src:  '/icon-192x192.png',
+          sizes: '192x92',
           type: 'image/png',
-          purpose: 'maskable',
+          purpose: 'any',
         },
       ],
     };
