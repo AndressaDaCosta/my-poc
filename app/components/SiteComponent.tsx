@@ -88,6 +88,11 @@ export default function SiteComponent() {
 		return /iphone|ipad|ipod/.test(userAgent)
 	}
 
+	const isMacOrIPad = () => {
+		const userAgent = window.navigator.userAgent.toLowerCase()
+		return /mac|ipad/.test(userAgent) // Verifica se o dispositivo é Mac ou iPad
+	}
+
 	const installApp = async () => {
 		if (deferredPrompt) {
 			if (
@@ -164,10 +169,10 @@ export default function SiteComponent() {
 							}
 						</p>
 
-						{setupButtonVisible && !isIOSDevice() && (
+						{setupButtonVisible && !isIOSDevice()  && (
 							<button onClick={installApp}>Baixar o App</button>
 						)}
-						{isIOSDevice() && (
+						{isIOSDevice() && !isMacOrIPad() && (
 							<button onClick={promptAddToHomeScreen}>
 								Como Baixar o App (iOS)
 							</button>
