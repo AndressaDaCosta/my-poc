@@ -1,8 +1,6 @@
-import type { Metadata } from "next"
 import { headers } from "next/headers"
+import type { Metadata } from "next"
 import SiteComponent from "./components/SiteComponent"
-import { useState } from "react"
-import RootLayout from "./layout"
 
 type SiteConfig = {
 	data: {
@@ -67,9 +65,5 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function Home() {
-	return (
-		<RootLayout manifest="/manifest.json">
-			<SiteComponent />
-		</RootLayout>
-	)
+	return <SiteComponent />
 }
