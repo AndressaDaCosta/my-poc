@@ -34,7 +34,10 @@ export default function RootLayout({
 							)}`}
 						/>
 					) : (
-						<link rel="manifest" href="/manifest.webmanifest" />
+						<link
+							rel="manifest"
+							href="/manifest.json"
+						/>
 					)}
 					<meta
 						name="theme-color"
