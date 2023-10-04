@@ -169,7 +169,7 @@ export default function SiteComponent() {
 							}
 						</p>
 
-						{setupButtonVisible && !isIOSDevice()  && (
+						{setupButtonVisible && !isIOSDevice()  && isMacOrIPad() && (
 							<button onClick={installApp}>Baixar o App</button>
 						)}
 						{isIOSDevice() && !isMacOrIPad() && (
