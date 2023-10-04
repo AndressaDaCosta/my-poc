@@ -1,4 +1,5 @@
 "use client"
+
 import Head from "next/head"
 import { useEffect, useState } from "react"
 import type { MetadataRoute } from "next/types"
@@ -26,26 +27,9 @@ export default function RootLayout({
 		<>
 			<html lang="en">
 				<Head>
-					{manifestData ? (
-						<link
-							rel="manifest"
-							href={`data:application/json,${encodeURIComponent(
-								JSON.stringify(manifestData)
-							)}`}
-						/>
-					) : (
-						<link
-							rel="manifest"
-							href="/manifest.json"
-						/>
-					)}
-					<meta
-						name="theme-color"
-						content="#fff"
-					/>
 					<link
-						rel="apple-touch-icon"
-						href="/icon-192x192.png"
+						rel="manifest"
+						href="/manifest.webmanifest"
 					/>
 
 					<meta
