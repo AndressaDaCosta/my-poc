@@ -99,13 +99,13 @@ Prova de conceito (PoC) que aborda a resolução de problemas de indexação e c
   <div style="margin-right: 10px;">
     <span style="display: block; margin-bottom: 5px;">Mobile Vídeo</span>
     <video width="320" height="240" controls>
-      <source src="/assets/mobile-video-app.mp4" type="video/mp4">
+      <source src="https://github.com/AndressaDaCosta/my-poc/blob/main/assets/mobile-video-app.mp4" type="video/mp4">
     </video>
   </div>
   <div>
     <span style="display: block; margin-bottom: 5px;">Desktop Vídeo</span>
     <video width="320" height="240" controls>
-      <source src="/assets/desktop-app-video.mov" type="video/mov">
+      <source src="https://github.com/AndressaDaCosta/my-poc/blob/main/assets/desktop-app-video.mov" type="video/mov">
     </video>
   </div>
 </div>
