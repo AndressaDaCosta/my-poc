@@ -88,14 +88,17 @@ export default function SiteComponent() {
 		return /iphone|ipad|ipod/.test(userAgent)
 	}
 
+	const isAppInstalled = () => {
+		return (
+			"standalone" in window.navigator && window.navigator["standalone"]
+		)
+	}
+
 	const installApp = async () => {
 		if (deferredPrompt) {
-			if (
-				isIOSDevice() &&
-				"standalone" in window.navigator &&
-				!window.navigator["standalone"]
-			) {
+			if (isIOSDevice() && isAppInstalled()) {
 				alert("O aplicativo já está instalado.")
+				console.log("O aplicativo já está instalado.")
 			} else {
 				deferredPrompt.prompt()
 				const { outcome } = await deferredPrompt.userChoice.then(
@@ -164,10 +167,14 @@ export default function SiteComponent() {
 							}
 						</p>
 
-						{setupButtonVisible && !isIOSDevice() && (
-							<button onClick={installApp}>Baixar o App</button>
-						)}
-						{isIOSDevice() && (
+						{setupButtonVisible &&
+							!isIOSDevice() &&
+							!isAppInstalled() && (
+								<button onClick={installApp}>
+									Baixar o App
+								</button>
+							)}
+						{isIOSDevice() && !isAppInstalled() && (
 							<button onClick={promptAddToHomeScreen}>
 								Como Baixar o App (iOS)
 							</button>
