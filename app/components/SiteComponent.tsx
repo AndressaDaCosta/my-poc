@@ -56,6 +56,7 @@ export default function SiteComponent() {
 		window.addEventListener("beforeinstallprompt", (e) => {
 			e.preventDefault()
 			setDeferredPrompt(e)
+			setSetupButtonVisible(true); 
 		})
 	}, [])
 	useEffect(() => {
@@ -109,6 +110,7 @@ export default function SiteComponent() {
 							console.log("Configuração do PWA rejeitada")
 						}
 						setDeferredPrompt(null)
+						setSetupButtonVisible(false); 
 					}
 				)
 			}
