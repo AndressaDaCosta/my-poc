@@ -13,17 +13,18 @@ export default async function manifest(): Promise<MetadataRoute.Manifest> {
 
     // Usar os dados da API para gerar o manifesto dinâmico
     const dynamicManifest: MetadataRoute.Manifest = {
-      name: data.data.sections.configurations?.title || 'Nome Padrão',
+      name: data.data.sections.stores[0].name  || 'Nome Padrão',
       short_name: data.data.sections.stores[0].name || 'Nome Curto Padrão',
-      description: data.data.sections.configurations?.description || 'Descrição Padrão',
+      description: data.data.sections.configurations?.title || 'Descrição Padrão',
       start_url: '/',
       display: 'standalone',
       background_color: data.data.sections.banners[0]?.button_bg_color || '#ffffff',
       theme_color: data.data.sections.banners[0]?.button_text_color || '#000000',
       icons: [
         {
-          src:  '/icon-192x192.png',
-          sizes: '192x192',
+          src: data.data.sections.configurations
+          ?.favicon ||  '/icon-600x600.png',
+          sizes: '600x600',
           type: 'image/png',
           purpose: 'any',
         },
