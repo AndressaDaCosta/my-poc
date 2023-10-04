@@ -52,10 +52,36 @@ export default function SiteComponent() {
 	const [deferredPrompt, setDeferredPrompt] = useState<any>(null)
 	const [loading, setLoading] = useState(true)
 
-	const handleBeforeInstallPrompt = (e: any) => {
-		e.preventDefault()
-		setDeferredPrompt(e)
-	}
+	useEffect(() => {
+		window.addEventListener("beforeinstallprompt", (e) => {
+			e.preventDefault()
+			setDeferredPrompt(e)
+		})
+	}, [])
+	useEffect(() => {
+		fetch("https://api-site-config.convem.me/V1/config-json/539")
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error("Erro na solicitação à API")
+				}
+				return response.json()
+			})
+			.then((data: SiteConfig) => {
+				setSiteConfig(data)
+				setSetupButtonVisible(true)
+				return manifest()
+			})
+			.then((manifestData) => {
+				setManifestData(manifestData)
+			})
+			.catch((error) => {
+				console.error(error)
+				setSiteConfig(null)
+			})
+			.finally(() => {
+				setLoading(false)
+			})
+	}, [])
 
 	const isIOSDevice = () => {
 		const userAgent = window.navigator.userAgent.toLowerCase()
@@ -91,35 +117,6 @@ export default function SiteComponent() {
 			'Para adicionar este aplicativo à tela inicial é necessário acessar o site pelo navegador Safari, depois toque no ícone de compartilhamento ⏏️ e selecione "Adicionar à Tela de Início ⊕".'
 		)
 	}
-	useEffect(() => {
-		fetch("https://api-site-config.convem.me/V1/config-json/539")
-			.then((response) => {
-				if (!response.ok) {
-					throw new Error("Erro na solicitação à API")
-				}
-				return response.json()
-			})
-			.then((data: SiteConfig) => {
-				setSiteConfig(data)
-				setSetupButtonVisible(true)
-				return manifest()
-			})
-			.then((manifestData) => {
-				setManifestData(manifestData)
-			})
-			.catch((error) => {
-				console.error(error)
-				setSiteConfig(null)
-			})
-			.finally(() => {
-				setLoading(false)
-			})
-
-		window.addEventListener(
-			"beforeinstallprompt",
-			handleBeforeInstallPrompt
-		)
-	}, [])
 
 	if (loading) {
 		return <div>Carregando...</div>
