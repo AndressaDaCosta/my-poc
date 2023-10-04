@@ -34,8 +34,19 @@ type InstallPromptResult = {
 	platform: string
 }
 
+const getManifest = async () => {
+	try {
+		const data = await manifest()
+		return data
+	} catch (error) {
+		console.error(error)
+		return null
+	}
+}
+
 export default function SiteComponent() {
-	const [manifestData, setManifestData] = useState<MetadataRoute.Manifest | null>(null)
+	const [manifestData, setManifestData] =
+		useState<MetadataRoute.Manifest | null>(null)
 	const [siteConfig, setSiteConfig] = useState<SiteConfig | null>(null)
 	const [setupButtonVisible, setSetupButtonVisible] = useState(false)
 	const [deferredPrompt, setDeferredPrompt] = useState<any>(null)
@@ -109,7 +120,6 @@ export default function SiteComponent() {
 			handleBeforeInstallPrompt
 		)
 	}, [])
-	
 
 	if (loading) {
 		return <div>Carregando...</div>

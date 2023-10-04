@@ -1,28 +1,10 @@
-"use client"
-
 import Head from "next/head"
-import { useEffect, useState } from "react"
-import type { MetadataRoute } from "next/types"
-import manifest from "./manifest"
 
 export default function RootLayout({
 	children
 }: {
 	children: React.ReactNode
 }) {
-	const [manifestData, setManifestData] =
-		useState<MetadataRoute.Manifest | null>(null)
-
-	useEffect(() => {
-		manifest()
-			.then((data) => {
-				setManifestData(data)
-			})
-			.catch((error) => {
-				console.error(error)
-			})
-	}, [])
-
 	return (
 		<>
 			<html lang="en">
@@ -30,6 +12,11 @@ export default function RootLayout({
 					<link
 						rel="manifest"
 						href="/manifest.webmanifest"
+					/>
+					<link
+						rel="apple-touch-icon"
+						sizes="180x180"
+						href="/apple-touch-icon.png"
 					/>
 
 					<meta
