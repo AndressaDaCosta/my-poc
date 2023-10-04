@@ -48,7 +48,7 @@ export default function SiteComponent() {
 	const [manifestData, setManifestData] =
 		useState<MetadataRoute.Manifest | null>(null)
 	const [siteConfig, setSiteConfig] = useState<SiteConfig | null>(null)
-	const [setupButtonVisible, setSetupButtonVisible] = useState(false)
+	const [showInstallButton, setShowInstallButton] = useState(false)
 	const [deferredPrompt, setDeferredPrompt] = useState<any>(null)
 	const [loading, setLoading] = useState(true)
 
@@ -56,7 +56,7 @@ export default function SiteComponent() {
 		window.addEventListener("beforeinstallprompt", (e) => {
 			e.preventDefault()
 			setDeferredPrompt(e)
-			setSetupButtonVisible(true); 
+			setShowInstallButton(true)
 		})
 	}, [])
 	useEffect(() => {
@@ -69,7 +69,6 @@ export default function SiteComponent() {
 			})
 			.then((data: SiteConfig) => {
 				setSiteConfig(data)
-				setSetupButtonVisible(true)
 				return manifest()
 			})
 			.then((manifestData) => {
@@ -106,11 +105,11 @@ export default function SiteComponent() {
 					(choiceResult: InstallPromptResult) => {
 						if (choiceResult.outcome === "accepted") {
 							console.log("PWA configurado com sucesso")
+							setShowInstallButton(false)
 						} else {
 							console.log("Configuração do PWA rejeitada")
 						}
 						setDeferredPrompt(null)
-						setSetupButtonVisible(false); 
 					}
 				)
 			}
@@ -169,14 +168,14 @@ export default function SiteComponent() {
 							}
 						</p>
 
-						{setupButtonVisible &&
+						{showInstallButton &&
 							!isIOSDevice() &&
 							!isAppInstalled() && (
 								<button onClick={installApp}>
 									Baixar o App
 								</button>
 							)}
-						{isIOSDevice() && !isAppInstalled() && (
+						{isIOSDevice() &&  (
 							<button onClick={promptAddToHomeScreen}>
 								Como Baixar o App (iOS)
 							</button>
