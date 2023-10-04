@@ -23,7 +23,7 @@ export default async function manifest(): Promise<MetadataRoute.Manifest> {
       icons: [
         {
           src:  '/icon-192x192.png',
-          sizes: '192x92',
+          sizes: '192x192',
           type: 'image/png',
           purpose: 'any',
         },
