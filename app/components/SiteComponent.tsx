@@ -85,7 +85,7 @@ export default function SiteComponent() {
 
 	const isIOSDevice = () => {
 		const userAgent = window.navigator.userAgent.toLowerCase()
-		return /iphone|ipod/.test(userAgent)
+		return /iphone|ipad|ipod/.test(userAgent)
 	}
 
 	const installApp = async () => {
