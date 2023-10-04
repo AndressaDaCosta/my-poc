@@ -62,7 +62,7 @@ Prova de conceito (PoC) que aborda a resolução de problemas de indexação e c
 
 #
 
-<div style="display: flex; flex-wrap: wrap; align-items: center;">
+<div style="display: flex; align-items: center;">
   <div style="text-align: center; margin: 10px;">
     <span>Botão Mobile</span>
     <br>
@@ -80,7 +80,7 @@ Prova de conceito (PoC) que aborda a resolução de problemas de indexação e c
   </div>
 
 </div>
-<div style="display: flex; flex-wrap: wrap; align-items: center;">
+<div style="display: flex; align-items: center;">
   <div style="text-align: center; margin: 10px;">
     <span>Botão no Iphone (IOS)</span>
     <br>
@@ -95,22 +95,16 @@ Prova de conceito (PoC) que aborda a resolução de problemas de indexação e c
 
 #
 
-<div style="display: flex; justify-content: space-between;">
+
   <div style="margin-right: 10px;">
-    <span style="display: block; margin-bottom: 5px;">Mobile Vídeo</span>
-    <video width="320" height="240" controls>
-      <source src="https://github.com/AndressaDaCosta/my-poc/blob/main/assets/mobile-video-app.mp4" type="video/mp4">
-    </video>
+  <img src="./assets/mobile-video-app.gif" >
   </div>
+    
   <div>
-    <span style="display: block; margin-bottom: 5px;">Desktop Vídeo</span>
-    <video width="320" height="240" controls>
-      <source src="https://github.com/AndressaDaCosta/my-poc/blob/main/assets/desktop-app-video.mov" type="video/mov">
-    </video>
+      <img  src="./assets/desktop-app-video.gif" >
   </div>
 </div>
 
-</div>
 <br>
 <br>
 <br>
