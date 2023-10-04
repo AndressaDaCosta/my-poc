@@ -52,15 +52,14 @@ export async function generateMetadata(): Promise<Metadata> {
 			locale: "pt_BR",
 			type: "website"
 		},
-		// manifest: "/manifest.webmanifest",
-		// themeColor: "#010101",
-		// appleWebApp: {
-		// 	capable: true,
-		// 	statusBarStyle: "default"
-		// },
-		// formatDetection: {
-		// 	telephone: false
-		// }
+		manifest: "/manifest.webmanifest",
+		appleWebApp: {
+			capable: true,
+			statusBarStyle: "default"
+		},
+		formatDetection: {
+			telephone: false
+		}
 	}
 }
 
