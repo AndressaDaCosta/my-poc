@@ -19,7 +19,6 @@ export default async function manifest(): Promise<MetadataRoute.Manifest> {
 			description:
 				data.data.sections.configurations?.title || "Descrição Padrão",
 			start_url: "/",
-			id: "/",
 			display: "standalone",
 			background_color:
 				data.data.sections.banners[0]?.button_bg_color || "#ffffff",
